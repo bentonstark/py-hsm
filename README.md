@@ -20,10 +20,12 @@ The pihsm module has been tested to work with the following HSM devices and soft
 
 ## Installation Prerequisites
 - Python 3.x
-- enum34 is required if Python version less than 3.4 ($ pip install enum34)
+- if Python 3.3 or less then enum34 is required ($ pip install enum34)
 - libhsm.so https://github.com/bentonstark/libhsm
 
-**pyenv** and optionally **virtualenv** can be used to create an isolated Python 3.5.x environment if 3.5.x is not available on your system.  If there is enough demand requests, future versions may be back support Python 2.7.x
+**pyenv** and optionally **virtualenv** can be used to create an
+isolated Python 3.x environment if 3.x is not available on your system.
+If there is enough demand requests, future versions may be back support Python 2.7.x
 
 ## Tested Platforms
 - Fedora 25
