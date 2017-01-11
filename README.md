@@ -18,7 +18,7 @@ The pihsm module has been tested to work with the following HSM devices and soft
 - Utimaco Security Server Simulator (SMOS Ver. 3.1.2.3)
 - OpenDNSSEC SoftHSM 2.2.0
 
-### Installation Prerequisites
+## Installation Prerequisites
 - Python 3.5.x
 - libhsm https://github.com/bentonstark/libhsm
 
@@ -28,6 +28,11 @@ Tested Platforms.
 - Fedora 25
 - CentOS 6
 - CentOS 7
+
+##Installation Steps
+Remove an existing installations and then install with setup.py.
+    $ cd pihsm
+    $ python setup.py install
 
 ## Usage Examples
 ### Login / Logout
@@ -225,29 +230,6 @@ with HsmClient(slot=1, pin="partition_password", pkcs11_lib="/usr/lib/vendorp11.
 ```
 
 
-
-=== INSTALLATION STEPS
-This package supports the Linux 64-bit and optionally Windows 64-bit.  It have been
-tested with the SafeNet/Gemalto Luna SA-5, Luna K5 PCIe card, Utimaco Simulator,
-and DNSSec's SoftHSM2.  
-
-== PRE-REQUISITS
-
-* Install libhsm shared library on the host system.
-  The libhsm is a companion shared library needed by pihsm to connect to the
-  vendor specific PKCS#11 library implemenation. 
-  
-  https://github.com/bentonstark/libhsm
-
-* Verify Python 3+ is installed.
-    $ python -V
-
-* Uninstall any previous pihsm version.
-    $ pip uninstall pihsm
-
-== MANUAL INSTALL
-    $ cd pihsm
-    $ python setup.py install
 
 
 
