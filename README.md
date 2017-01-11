@@ -29,8 +29,8 @@ Tested Platforms.
 - CentOS 6
 - CentOS 7
 
-##Installation Steps
-Remove an existing installations and then install with setup.py.
+## Installation Steps
+Before installing, remove an existing pihsm installations.
 ```
     $ cd pihsm
     $ python setup.py install
@@ -38,7 +38,10 @@ Remove an existing installations and then install with setup.py.
 ## Usage Examples
 ### Login / Logout
 ```python
-# long method - use with keyword for short method
+from pihsm.hsmclient import HsmClient
+
+# note: the with keyword can be used to reduce login / logout steps
+# what is shown below is the verbose method
 c = HsmClient(pkcs11_lib="/usr/lib/vendorp11.so")
 c.open_session(slot=1)
 c.login(pin="partition_password")
