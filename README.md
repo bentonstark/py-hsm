@@ -31,9 +31,10 @@ Tested Platforms.
 
 ##Installation Steps
 Remove an existing installations and then install with setup.py.
+```
     $ cd pihsm
     $ python setup.py install
-
+```
 ## Usage Examples
 ### Login / Logout
 ```python
