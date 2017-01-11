@@ -20,7 +20,7 @@ The pihsm module has been tested to work with the following HSM devices and soft
 
 ## Installation Prerequisites
 - Python 3.5.x
-- libhsm https://github.com/bentonstark/libhsm
+- libhsm.so https://github.com/bentonstark/libhsm
 
 **virtualenv** can be used to create an isolated Python 3.5.x environment if 3.5.x is not available on your system.  If there is enough demand requests, future versions may be back support Python 2.7.x
 
@@ -30,10 +30,10 @@ The pihsm module has been tested to work with the following HSM devices and soft
 - CentOS 7
 
 ## Installation Steps
-Before installing, remove an existing pihsm installations.
+Before installing, remove any existing pihsm installations.
 ```
-    $ cd pihsm
-    $ python setup.py install
+$ cd pihsm
+$ python setup.py install
 ```
 ## Usage Examples
 ### Login / Logout
