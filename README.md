@@ -22,9 +22,9 @@ The pihsm module has been tested to work with the following HSM devices and soft
 - Python 3.5.x
 - libhsm https://github.com/bentonstark/libhsm
 
-**Note:** If your server already has specific versions of these components installed, you can use a **virtualenv** to create an isolated python environment.  If there is enough demand requests, future versions may be back supported to Python 2.7.x
+**virtualenv** can be used to create an isolated Python 3.5.x environment if 3.5.x is not available on your system.  If there is enough demand requests, future versions may be back support Python 2.7.x
 
-Tested Platforms.
+## Tested Platforms
 - Fedora 25
 - CentOS 6
 - CentOS 7
