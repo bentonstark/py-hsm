@@ -1,0 +1,3 @@
+include DESCRIPTION.rst
+# Include the test suite (FIXME: does not work yet)
+ recursive-include data *
