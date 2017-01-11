@@ -25,7 +25,7 @@ classifiers = ["Development Status :: 5 - Production/Stable",
 setup(
     name="pihsm",
     version="2.2.0",
-    description= ("A simplified, easy to use PKCS#11 HSM client for Python."),
+    description= ("A simplified, easy to use PKCS#11 HSM API for Python."),
     classifiers=classifiers,
     platforms="Win32 Unix",
     long_description=description,    
