@@ -20,7 +20,7 @@ The pihsm module has been tested to work with the following HSM devices and soft
 
 ### Installation Prerequisites
 - Python 3.5.x
-- libhsm shared library
+- libhsm https://github.com/bentonstark/libhsm
 
 **Note:** If your server already has specific versions of these components installed, you can use a **virtualenv** to create an isolated python environment.  If there is enough demand requests, future versions may be back supported to Python 2.7.x
 
