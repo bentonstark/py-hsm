@@ -1802,7 +1802,7 @@ class HsmClient:
     def import_rsa_public_key(self,
                               key_label,
                               modulus,
-                              exponent="\x10\x00\x01",
+                              exponent=b'\x01\x00\x01',
                               token=True,
                               private=True,
                               modifiable=False,
