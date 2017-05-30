@@ -99,7 +99,7 @@ class HsmClient:
             raise HsmError("pihsm not supported on this platform")
 
         # underlying libhsm binary version
-        self.__libhsmVersion = b'2.0.0'
+        self.__libhsmVersion = b'2.0.1'
         # slot and token information
         self.sessionHandle = 0
         self.slotNumber = 0
@@ -205,6 +205,9 @@ class HsmClient:
         self.__libhsm.import_rsa_public_key.argtypes = [c_char_p, c_int, c_int, c_char_p, c_int, c_char_p, c_int,
                                                         c_char_p, c_int, c_int, c_int, c_int, c_int, c_int, c_int,
                                                         c_int, POINTER(c_int)]
+        self.__libhsm.import_ec_public_key.argtypes = [c_char_p, c_int, c_int, c_char_p, c_int, c_char_p, c_int,
+                                                       c_char_p, c_int, c_int, c_int, c_int, c_int, c_int, c_int,
+                                                       c_int, POINTER(c_int)]
         self.__libhsm.wrap_key.argtypes = [c_char_p, c_int, c_int, c_int, c_int, c_char_p, c_int, c_int, c_char_p,
                                            POINTER(c_int)]
         self.__libhsm.unwrap_secret_key.argtypes = [c_char_p, c_int, c_int, c_int, c_char_p, c_int, c_int, c_char_p,
@@ -1377,7 +1380,7 @@ class HsmClient:
     def create_ecc_key_pair(self,
                             public_key_label,
                             private_key_label,
-                            curve_parameters,
+                            ec_params,
                             token=True,
                             private=True,
                             modifiable=False,
@@ -1396,7 +1399,7 @@ class HsmClient:
 
             private_key_label:    text label of the new private key
 
-            curve_parameters:     DER encoded EC curve parameters or
+            ec_params:            DER encoded EC curve parameters or
                                   EC curve OID as a binary string
 
             token:                set to True if key should persist on
@@ -1449,10 +1452,10 @@ class HsmClient:
             raise HsmError("public_key_label must be of type str")
         if len(private_key_label) <= 0:
             raise HsmError("private_key_label must have length 1 or greater")
-        if not isinstance(curve_parameters, bytes):
-            raise HsmError("curve_parameters must be of type bytes")
-        if len(curve_parameters) <= 0:
-            raise HsmError("curve_parameters must have length 1 or greater")
+        if not isinstance(ec_params, bytes):
+            raise HsmError("ec_params must be of type bytes")
+        if len(ec_params) <= 0:
+            raise HsmError("ec_params must have length 1 or greater")
         if not isinstance(token, bool):
             raise HsmError("token must be of type bool")
         if not isinstance(private, bool):
@@ -1480,8 +1483,8 @@ class HsmClient:
         rv = self.__libhsm.create_ec_key_pair(msg,
                                               len(msg),
                                               self.sessionHandle,
-                                              curve_parameters,
-                                              len(curve_parameters),
+                                              ec_params,
+                                              len(ec_params),
                                               pub_key_label_bytes,
                                               len(pub_key_label_bytes),
                                               pvt_key_label_bytes,
@@ -1854,11 +1857,11 @@ class HsmClient:
         if len(key_label) == 0:
             raise HsmError("key_label must have length 1 or greater")
         if not isinstance(modulus, bytes):
-            raise HsmError("modulus must be of type HsmAttribute")
+            raise HsmError("modulus must be of type bytes")
         if len(modulus) == 0:
             raise HsmError("modulus must have length 1 or greater")
         if not isinstance(exponent, bytes):
-            raise HsmError("exponent must be of type HsmAttribute")
+            raise HsmError("exponent must be of type bytes")
         if len(exponent) == 0:
             raise HsmError("exponent must have length 1 or greater")
         if not isinstance(token, bool):
@@ -1896,6 +1899,111 @@ class HsmClient:
                                                  wrap,
                                                  overwrite,
                                                  byref(h_key_ptr))
+
+        if rv == 0:
+            raise HsmError(bytes_to_str(msg.value))
+        h_key = h_key_ptr.value
+        if h_key == 0:
+            raise HsmError("key handle returned from HSM is invalid")
+        return h_key
+
+    def import_ec_public_key(self,
+                             key_label,
+                             ec_params,
+                             ec_point,
+                             token=True,
+                             private=True,
+                             modifiable=False,
+                             verify=True,
+                             encrypt=True,
+                             wrap=True,
+                             overwrite=False):
+        """
+        Imports a clear-text EC public key on the HSM with the specified
+        attributes.
+
+        Args:
+
+            key_label:            text label of the public key
+
+            ec_params:            DER encoded EC curve parameters or
+                                  EC curve OID (binary string)
+
+            ec_point:             EC point for public key (binary string)
+
+            token:                set to True if key should persist on
+                                  the HSM token after session ends
+
+            private:              set to True if the key is private and
+                                  should only be visible by the user
+
+            modifiable:           set to True if the key can be modified
+                                  after unwrapped on the HSM
+
+            verify:               set to True if the key is allowed to be
+                                  used in verify operations
+
+            encrypt:              set to True if the key is allowed to be
+                                  used in encrypt operations
+
+            wrap:                 set to True if the key is allowed to be
+                                  used in wrap operations
+
+            overwrite:            set to True if the new keys should
+                                  overwrite any existing keys with the same
+                                  label
+
+        Returns:
+            The key object handle on the HSM.
+
+        """
+        if not isinstance(key_label, str):
+            raise HsmError("key_label must be of type str")
+        if len(key_label) == 0:
+            raise HsmError("key_label must have length 1 or greater")
+        if not isinstance(ec_params, bytes):
+            raise HsmError("ec_params must be of type bytes")
+        if len(ec_params) == 0:
+            raise HsmError("ec_params must have length 1 or greater")
+        if not isinstance(ec_point, bytes):
+            raise HsmError("ec_point must be of type bytes")
+        if len(ec_point) == 0:
+            raise HsmError("ec_point must have length 1 or greater")
+        if not isinstance(token, bool):
+            raise HsmError("token must be of type bool")
+        if not isinstance(private, bool):
+            raise HsmError("private must be of type bool")
+        if not isinstance(modifiable, bool):
+            raise HsmError("modifiable must be of type bool")
+        if not isinstance(verify, bool):
+            raise HsmError("verify must be of type bool")
+        if not isinstance(encrypt, bool):
+            raise HsmError("encrypt must be of type bool")
+        if not isinstance(wrap, bool):
+            raise HsmError("wrap must be of type bool")
+        if not isinstance(overwrite, bool):
+            raise HsmError("overwrite must be of type bool")
+        self.__validate_session()
+        msg = create_string_buffer(self.__messageBufferSize)
+        key_label_bytes = str_to_bytes(key_label)
+        h_key_ptr = c_int()
+        rv = self.__libhsm.import_ec_public_key(msg,
+                                                len(msg),
+                                                self.sessionHandle,
+                                                key_label_bytes,
+                                                len(key_label_bytes),
+                                                ec_params,
+                                                len(ec_params),
+                                                ec_point,
+                                                len(ec_point),
+                                                token,
+                                                private,
+                                                modifiable,
+                                                verify,
+                                                encrypt,
+                                                wrap,
+                                                overwrite,
+                                                byref(h_key_ptr))
 
         if rv == 0:
             raise HsmError(bytes_to_str(msg.value))
