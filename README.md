@@ -15,6 +15,7 @@ The pihsm module has been tested to work with the following HSM devices and soft
 - SafeNet / Gemalto Luna SA-5
 - SafeNet / Gemalto Luna PCIe K5/K6
 - SafeNet / Gemalto Luna CA-4
+- SafeNet ProtectServer PCIe
 - Utimaco Security Server Simulator (SMOS Ver. 3.1.2.3)
 - OpenDNSSEC SoftHSM 2.2.0
 
