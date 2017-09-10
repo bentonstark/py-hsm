@@ -1,6 +1,6 @@
 # eccurveoids.py
 # author: Benton Stark (bestark@cisco.com)
-# date: 01-26-2015
+# date: 09-10-2017
 
 from enum import Enum
 
