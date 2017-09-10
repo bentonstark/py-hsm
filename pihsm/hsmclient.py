@@ -26,6 +26,8 @@ from pihsm.hsmenums import HsmUser
 from pihsm.hsmerror import HsmError
 from pihsm.hsmobject import HsmObject
 from pihsm.hsmslot import HsmSlot
+from pihsm.eccurveoids import EcCurveOids
+from pihsm.eccurves import EcCurves
 from pihsm.convert import str_to_bytes
 from pihsm.convert import bytes_to_str
 from pihsm.convert import bytes_to_hex
@@ -1380,7 +1382,7 @@ class HsmClient:
     def create_ecc_key_pair(self,
                             public_key_label,
                             private_key_label,
-                            ec_params,
+                            ec_params=EcCurveOids.P256,
                             token=True,
                             private=True,
                             modifiable=False,
@@ -1400,7 +1402,11 @@ class HsmClient:
             private_key_label:    text label of the new private key
 
             ec_params:            DER encoded EC curve parameters or
-                                  EC curve OID as a binary string
+                                  EC curve OID as bytes data type.
+                                  Use the enum EcCurveOids (recommended) or
+                                  EcCurves when possible to provide the
+                                  ec_params binary value.
+                                  (default EcCurveOids.P256)
 
             token:                set to True if key should persist on
                                   the HSM token after session ends
@@ -1452,8 +1458,10 @@ class HsmClient:
             raise HsmError("public_key_label must be of type str")
         if len(private_key_label) <= 0:
             raise HsmError("private_key_label must have length 1 or greater")
+        if isinstance(ec_params, EcCurveOids) or isinstance(ec_params, EcCurves):
+            ec_params = ec_params.value
         if not isinstance(ec_params, bytes):
-            raise HsmError("ec_params must be of type bytes")
+            raise HsmError("ec_params must be of type bytes, EcCurveOids, or EcCurves")
         if len(ec_params) <= 0:
             raise HsmError("ec_params must have length 1 or greater")
         if not isinstance(token, bool):
@@ -1927,7 +1935,10 @@ class HsmClient:
             key_label:            text label of the public key
 
             ec_params:            DER encoded EC curve parameters or
-                                  EC curve OID (binary string)
+                                  EC curve OID as bytes data type.
+                                  Use the enum EcCurveOids (recommended) or
+                                  EcCurves when possible to provide the
+                                  ec_params binary value.
 
             ec_point:             EC point for public key (binary string)
 
@@ -1961,8 +1972,10 @@ class HsmClient:
             raise HsmError("key_label must be of type str")
         if len(key_label) == 0:
             raise HsmError("key_label must have length 1 or greater")
+        if isinstance(ec_params, EcCurveOids) or isinstance(ec_params, EcCurves):
+            ec_params = ec_params.value
         if not isinstance(ec_params, bytes):
-            raise HsmError("ec_params must be of type bytes")
+            raise HsmError("ec_params must be of type bytes, EcCurveOids, or EcCurves")
         if len(ec_params) == 0:
             raise HsmError("ec_params must have length 1 or greater")
         if not isinstance(ec_point, bytes):

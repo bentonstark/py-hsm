@@ -6,10 +6,12 @@ Security Modules (HSMs) such as SafeNet/Gemalto Luna HSMs, Utimaco HSMs,
 and DNSSec's SoftHSM.  This client supports the PKCS 11 OASIS standard v2.20 and requires
 the companion, cross-platform, open source shared library libhsm.so / libhsm.dll.'''
 
-classifiers = ["Development Status :: 5 - Production/Stable",
+classifiers = [
+                "Development Status :: 5 - Production/Stable",
                 "Intended Audience :: Developers",
-                "License :: OSI Approved :: GNU General Public License (GPL)",
+                "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
                 "Natural Language :: English",
+                "Operating System :: POSIX :: Linux",
                 "Operating System :: Microsoft :: Windows",
                 "Operating System :: OS Independent",
                 "Operating System :: Unix",
@@ -18,13 +20,15 @@ classifiers = ["Development Status :: 5 - Production/Stable",
                 "Programming Language :: Python :: 3.3",
                 "Programming Language :: Python :: 3.4",
                 "Programming Language :: Python :: 3.5",
+                "Topic :: Security",
                 "Topic :: Security :: Cryptography",
-                "Topic :: Software Development :: Libraries :: Python Modules"]
+                "Topic :: Software Development :: Libraries :: Python Modules"
+              ]
 
 setup(
     name="pihsm",
-    version="2.3.0",
-    description="A simplified, easy to use PKCS#11 HSM API for Python.",
+    version="2.4.0",
+    description="PKCS#11 API for interfacing HSMs",
     classifiers=classifiers,
     platforms="Win32 Unix",
     long_description=description,    
@@ -36,12 +40,15 @@ setup(
     download_url="https://github.com/bentonstark/pihsm/archive/master.zip",
     license="GPL",
     packages=find_packages(),
-    scripts=['./pihsm/eccurves.py',
-             './pihsm/hsmclient.py',
-             './pihsm/hsmenums.py',
-             './pihsm/hsmerror.py',
-             './pihsm/hsmobject.py',
-             './pihsm/hsmslot.py',
-             './pihsm/convert.py'],
-    keywords="crypto,pki,pkcs11,hsm"
+    scripts=[
+             './pyhsm/eccurveoids.py',
+             './pyhsm/eccurves.py',
+             './pyhsm/hsmclient.py',
+             './pyhsm/hsmenums.py',
+             './pyhsm/hsmerror.py',
+             './pyhsm/hsmobject.py',
+             './pyhsm/hsmslot.py',
+             './pyhsm/convert.py'
+            ],
+    keywords="pkcs#11,pkcs11,hsm,cryptopgraphy,hardware security module,security,RSA,Elliptic Curve,AES"
 )

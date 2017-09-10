@@ -11,13 +11,14 @@ Physical HSMs are built by a variety of 3rd party vendors and come in a variety 
 
 ## Supported HSMs
 The pihsm module has been tested to work with the following HSM devices and software based testbed HSMs.
-- SafeNet / Gemalto Luna SA-4
-- SafeNet / Gemalto Luna SA-5
-- SafeNet / Gemalto Luna PCIe K5/K6
-- SafeNet / Gemalto Luna CA-4
+- Gemalto SafeNet Luna SA-4
+- Gemalto SafeNet Luna SA-5
+- Gemalto SafeNet Luna PCIe K5/K6
+- Gemalto SafeNet Luna CA-4
 - SafeNet ProtectServer PCIe
+- FutureX Vectera Series
 - Utimaco Security Server Simulator (SMOS Ver. 3.1.2.3)
-- OpenDNSSEC SoftHSM 2.2.0
+- OpenDNSSEC SoftHSM 2.2.0 (softhsm2)
 
 ## Installation Prerequisites
 - Python 3.x
@@ -29,7 +30,8 @@ isolated Python 3.x environment if 3.x is not available on your system.
 If there is enough demand requests, future versions may be back support Python 2.7.x
 
 ## Tested Platforms
-- Fedora 25
+- Fedora 19, 23, 24, 25
+- Debian
 - CentOS 6
 - CentOS 7
 
@@ -156,13 +158,13 @@ with HsmClient(slot=1, pin="partition_password", pkcs11_lib="/usr/lib/vendorp11.
 ```python
 from pihsm.hsmclient import HsmClient
 from pihsm.convert import hex_to_bytes
+from pihsm.eccurveoids import EcCurveOids
 
 with HsmClient(slot=1, pin="partition_password", pkcs11_lib="/usr/lib/vendorp11.so") as c:
-  # prime256v1
-  ec_oid = hex_to_bytes("06082a8648ce3d03010")
+  # NIST P-256
   key_handles = c.create_ecc_key_pair(public_key_label="my_ec_pub",
                                       private_key_label="my_ec_pvt",
-                                      curve_parameters=ec_oid,
+                                      curve_parameters=EcCurveOids.P256,
                                       token=True,
                                       private=True,
                                       modifiable=False,
