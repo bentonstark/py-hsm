@@ -36,10 +36,16 @@ If there is enough demand requests, future versions may be back support Python 2
 - CentOS 6
 - CentOS 7
 
-## Installation Steps
-Before installing, remove any existing pyhsm installations ($ pip uninstall pyhsm).
+## Pypi Installation Steps
+https://pypi.python.org/pypi/py-hsm
 ```
-$ cd pyhsm
+$ pip install py-hsm
+```
+
+## Manual Installation Steps
+```
+$ git clone https://github.com/bentonstark/py-hsm.git
+$ cd py-hsm
 $ python setup.py install
 ```
 ## Usage Examples
