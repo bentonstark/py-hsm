@@ -14,7 +14,7 @@ from pyhsm.hsmenums import HsmMech
 
 def __main():
 
-    parser = argparse.ArgumentParser("verify", description="Verify with cryptographic key (RSA/EC private key).")
+    parser = argparse.ArgumentParser("verify", description="Verify with cryptographic key.")
     parser.add_argument("-handle", dest="keyHandle", default=0, type=int, required=True,
                         help="Handle of key.")
     parser.add_argument("-mech", dest="mech", type=str, required=True,
@@ -34,7 +34,9 @@ def __main():
                             "CA_LUNA_ECDSA_SHA224",
                             "CA_LUNA_ECDSA_SHA256",
                             "CA_LUNA_ECDSA_SHA384",
-                            "CA_LUNA_ECDSA_SHA512"
+                            "CA_LUNA_ECDSA_SHA512",
+                            "AES_MAC",
+                            "AES_MAC_GENERAL"
                         ],
                         help="Signing mechanism (algorithm) to use.")
     parser.add_argument("-data", dest="data", type=str, required=True,
