@@ -97,7 +97,9 @@ from pyhsm.hsmclient import HsmClient
 from pyhsm.hsmenums import HsmMech
 
 with HsmClient(slot=1, pin="partition_password", pkcs11_lib="/usr/lib/vendorp11.so") as c:
-  result = c.verify(handle=1, data=sig_to_verify, mechanism=HsmMech.SHA256_RSA_PKCS)
+  result = c.verify(handle=1,
+                    data=sig_to_verify,
+                    mechanism=HsmMech.SHA256_RSA_PKCS)
   print(str(result))
 ```
 ### Encrypt
@@ -107,7 +109,10 @@ from pyhsm.hsmenums import HsmMech
 from pyhsm.convert import bytes_to_hex
 
 with HsmClient(slot=1, pin="partition_password", pkcs11_lib="/usr/lib/vendorp11.so") as c:
-  ciphertext = c.encrypt(handle=aes_key_handle, data=cleartext, mechanism=HsmMech.AES_CBC_PAD, iv=init_vector)
+  ciphertext = c.encrypt(handle=aes_key_handle,
+                         data=cleartext,
+                         mechanism=HsmMech.AES_CBC_PAD,
+                         iv=init_vector)
   print(bytes_to_hex(ciphertext))
 ```
 ### Decrypt
@@ -127,7 +132,7 @@ from pyhsm.hsmenums import HsmSymKeyGen
 
 with HsmClient(slot=1, pin="partition_password", pkcs11_lib="/usr/lib/vendorp11.so") as c:
   key_handle = c.create_secret_key(key_label="my_aes_key",
-                                   HsmSymKeyGen.AES,
+                                   key_type=HsmSymKeyGen.AES,
                                    key_size_in_bits=256,
                                    token=True,
                                    private=True,
@@ -193,10 +198,11 @@ with HsmClient(slot=1, pin="partition_password", pkcs11_lib="/usr/lib/vendorp11.
   my_key_handle_to_wrap = 1
   my_aes_wrapping_key_handle = 2
   iv = c.generate_random(size=16)
-  wrapped_key_bytes = c.wrap_key(my_key_handle_to_wrap,
-                                 my_ses_wrapping_key_handle,
-                                 HsmMech.AES_CBC_PAD,
-                                 iv)
+
+  wrapped_key_bytes = c.wrap_key(key_handle=my_key_handle_to_wrap,
+                                 wrap_key_handle=my_aes_wrapping_key_handle,
+                                 wrap_key_mech=HsmMech.AES_CBC_PAD,
+                                 wrap_key_iv=iv)
   print(bytes_to_hex(wrapped_key_bytes))
 ```
 ### Unwrap Key (AES wrapped with AES)
@@ -252,7 +258,7 @@ with HsmClient(slot=1, pin="partition_password", pkcs11_lib="/usr/lib/vendorp11.
   my_key_label = 1
   c.set_attribute_value(handle=my_key_label,
                         attribute_type=HsmAttribute.LABEL,
-                        attribute_value=str_to_bytes("my_new"label"))
+                        attribute_value=str_to_bytes("my_new_label"))
 ```
 
 
