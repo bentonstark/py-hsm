@@ -45,7 +45,7 @@ def __main():
                         help="PSS salt value length.  Only used when mech is an PSS algorithm.")
     parser.add_argument("-sig", dest="sig", type=str, required=True,
                         help="Binary signature as a hex encoded string.")
-    parser.add_argument("-module", dest="module", required=True,
+    parser.add_argument("-p11", dest="module", required=True,
                         help="Full path to HSM's PKCS#11 shared library.")
     parser.add_argument("-slot", dest="slot", type=int, required=True, help="HSM slot number.")
     parser.add_argument("-pin", dest="pin", type=str, required=True, help="HSM slot partition or pin.")

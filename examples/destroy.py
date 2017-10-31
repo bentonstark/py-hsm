@@ -15,7 +15,7 @@ def __main():
     parser = argparse.ArgumentParser("destroy", description="Destroy object on the HSM partition.")
     parser.add_argument("-handle", dest="handle", required=True, type=int,
                         help="Handle of key to destroy.")
-    parser.add_argument("-module", dest="module", required=True,
+    parser.add_argument("-p11", dest="module", required=True,
                         help="Full path to HSM's PKCS#11 shared library.")
     parser.add_argument("-slot", dest="slot", type=int, required=True, help="HSM slot number.")
     parser.add_argument("-pin", dest="pin", type=str, required=True, help="HSM slot partition or pin.")

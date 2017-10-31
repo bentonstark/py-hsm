@@ -27,7 +27,7 @@ def __main():
                         help="Number of key generation operations (default: 10)")
     parser.add_argument("-persist", dest="persist", action="store_true", help="Persist keys on the partition"
                         "and do not remove them after the session closes.")
-    parser.add_argument("-module", dest="module", required=True,
+    parser.add_argument("-p11", dest="module", required=True,
                         help="Full path to HSM's PKCS#11 shared library.")
     parser.add_argument("-slot", dest="slot", type=int, required=True, help="HSM slot number.")
     parser.add_argument("-pin", dest="pin", type=str, required=True, help="HSM slot partition or pin.")

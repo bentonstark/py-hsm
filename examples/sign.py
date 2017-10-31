@@ -44,7 +44,7 @@ def __main():
                         help="Binary data to sign as a hex encoded string.  Example: 000A0B0C0D010203")
     parser.add_argument("-pss-length", dest="pssSaltLength", type=int, default=None, required=False,
                         help="PSS salt value length.  Only used when mech is an PSS algorithm.")
-    parser.add_argument("-module", dest="module", required=True,
+    parser.add_argument("-p11", dest="module", required=True,
                         help="Full path to HSM's PKCS#11 shared library.")
     parser.add_argument("-slot", dest="slot", type=int, required=True, help="HSM slot number.")
     parser.add_argument("-pin", dest="pin", type=str, required=True, help="HSM slot partition or pin.")

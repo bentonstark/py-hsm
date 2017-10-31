@@ -41,7 +41,7 @@ def __main():
     parser.add_argument("-X", dest="extractable", action="store_true", help="Allow key to be extracted.")
     parser.add_argument("-M", dest="modifiable", action="store_true", help="Allow key to be modified.")
     parser.add_argument("-O", dest="overwrite", action="store_true", help="Overwrite any existing key with same label.")
-    parser.add_argument("-module", dest="module", required=True,
+    parser.add_argument("-p11", dest="module", required=True,
                         help="Full path to HSM's PKCS#11 shared library.")
     parser.add_argument("-slot", dest="slot", type=int, required=True, help="HSM slot number.")
     parser.add_argument("-pin", dest="pin", type=str, required=True, help="HSM slot partition or pin.")

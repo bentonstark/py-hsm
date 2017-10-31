@@ -40,7 +40,7 @@ def __main():
                         help="Number of signing operations (default: 100)")
     parser.add_argument("-dz", "--data-size", dest="dataSize", type=int, default=100,
                         help="Size (in bytes) of random test data to sign.  (default: 100)")
-    parser.add_argument("-module", dest="module", required=True,
+    parser.add_argument("-p11", dest="module", required=True,
                         help="Full path to HSM's PKCS#11 shared library.")
     parser.add_argument("-slot", dest="slot", type=int, required=True, help="HSM slot number.")
     parser.add_argument("-pin", dest="pin", type=str, required=True, help="HSM slot partition or pin.")
