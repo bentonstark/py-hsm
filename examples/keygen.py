@@ -53,7 +53,7 @@ def __main():
 def __menu_handler(args):
 
     if not Path(args.module).is_file():
-        print("(-module) path does not exist")
+        print("(-p11) path does not exist")
         exit()
 
     with HsmClient(slot=args.slot, pin=args.pin, pkcs11_lib=args.module) as c:
