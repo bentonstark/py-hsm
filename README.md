@@ -98,7 +98,8 @@ from pyhsm.hsmenums import HsmMech
 
 with HsmClient(slot=1, pin="partition_password", pkcs11_lib="/usr/lib/vendorp11.so") as c:
   result = c.verify(handle=1,
-                    data=sig_to_verify,
+                    data=data_to_verify,
+		    signature=sig,
                     mechanism=HsmMech.SHA256_RSA_PKCS)
   print(str(result))
 ```
