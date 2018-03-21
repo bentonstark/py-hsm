@@ -37,7 +37,7 @@ classifiers = [
 
 setup(
     name="py-hsm",
-    version="2.4.0",
+    version="2.5.0",
     description="Simplified API for interfacing PKCS#11 compliant HSMs and devices.",
     classifiers=classifiers,
     platforms="Win32 Unix",
