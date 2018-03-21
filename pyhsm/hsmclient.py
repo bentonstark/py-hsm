@@ -94,7 +94,7 @@ class HsmClient:
             raise HsmError("pyhsm not supported on this platform")
 
         # underlying libhsm binary version
-        self.__libhsmVersion = b'2.4.0'
+        self.__libhsmVersion = b'2.5.0'
         # slot and token information
         self.sessionHandle = 0
         self.slotNumber = 0
@@ -216,6 +216,9 @@ class HsmClient:
         self.__libhsm.import_ec_public_key.argtypes = [c_char_p, c_ulong, c_ulong, c_char_p, c_ulong, c_char_p, c_ulong,
                                                        c_char_p, c_ulong, c_ulong, c_ulong, c_ulong, c_ulong, c_ulong,
                                                        c_ulong, c_ulong, POINTER(c_ulong)]
+        self.__libhsm.import_public_cert.argtypes = [c_char_p, c_ulong, c_ulong, c_char_p, c_ulong, c_char_p, c_ulong,
+                                                     c_char_p, c_ulong, c_char_p, c_ulong, c_char_p, c_ulong, c_char_p,
+                                                     c_ulong, c_ulong, c_ulong, c_ulong, c_ulong, POINTER(c_ulong)]
         self.__libhsm.wrap_key.argtypes = [c_char_p, c_ulong, c_ulong, c_ulong, c_ulong, c_char_p, c_ulong, c_ulong,
                                            c_char_p, POINTER(c_ulong)]
         self.__libhsm.unwrap_secret_key.argtypes = [c_char_p, c_ulong, c_ulong, c_ulong, c_char_p, c_ulong, c_ulong,
@@ -2210,6 +2213,119 @@ class HsmClient:
         if h_key == 0:
             raise HsmError("key handle returned from HSM is invalid")
         return h_key
+
+    def import_public_cert(self,
+                           cert_label,
+                           cert_value,
+                           cert_serial=None,
+                           cert_subject=None,
+                           cert_issuer=None,
+                           cert_id=None,
+                           token=True,
+                           private=True,
+                           modifiable=False,
+                           overwrite=False):
+        """
+        Imports a public X.509 certificate on the HSM with the specified
+        attributes.
+
+        Args:
+
+            cert_label:           text label of the public certificate
+
+            cert_value:           DER encoded X.509 public certificate binary string
+
+            cert_serial:          certificate serial number
+
+            cert_subject:         certificate subject field which is usually the DER
+                                  encoded ASN.1 binary string
+
+            cert_issuer:          certificate issuer field which is usually the DER
+                                  encoded ASN.1 binary string
+
+            cert_id:              key id value
+                                  Note: a random 16 byte value will be generated
+                                  and assigned if an ID is not provided
+
+            token:                set to True if certificate object should persist on
+                                  the HSM token after session ends
+
+            private:              set to True if the certificate object is private and
+                                  should only be visible by the user
+
+            modifiable:           set to True if the certificate object can be modified
+                                  after unwrapped on the HSM
+
+            overwrite:            set to True if the certificate object should
+                                  overwrite any existing object with the same
+                                  label
+
+        Returns:
+            The certificate object handle on the HSM.
+
+        """
+        if not isinstance(cert_label, str):
+            raise HsmError("cert_label must be of type str")
+        if len(cert_label) == 0:
+            raise HsmError("cert_label must have length 1 or greater")
+        if not isinstance(cert_value, bytes):
+            raise HsmError("cert_value must be of type bytes")
+        if cert_serial is None:
+            cert_serial = bytes()
+        if not isinstance(cert_serial, bytes):
+            raise HsmError("cert_serial must be of type bytes")
+        if cert_subject is None:
+            cert_subject = bytes()
+        if not isinstance(cert_subject, bytes):
+            raise HsmError("cert_subject must be of type bytes")
+        if cert_issuer is None:
+            cert_issuer = bytes()
+        if not isinstance(cert_issuer, bytes):
+            raise HsmError("cert_issuer must be of type bytes")
+        if cert_id is None:
+            cert_id = os.urandom(self.__idRandomSize)
+        if not isinstance(cert_id, bytes):
+            raise HsmError("cert_id must be of type bytes")
+        if not isinstance(token, bool):
+            raise HsmError("token must be of type bool")
+        if not isinstance(private, bool):
+            raise HsmError("private must be of type bool")
+        if not isinstance(modifiable, bool):
+            raise HsmError("modifiable must be of type bool")
+        if not isinstance(overwrite, bool):
+            raise HsmError("overwrite must be of type bool")
+        self.__validate_session()
+        msg = create_string_buffer(self.__messageBufferSize)
+        cert_label_bytes = str_to_bytes(cert_label)
+        h_cert_ptr = c_ulong()
+
+        rv = self.__libhsm.import_public_cert(msg,
+                                              len(msg),
+                                              self.sessionHandle,
+                                              cert_label_bytes,
+                                              len(cert_label_bytes),
+                                              cert_id,
+                                              len(cert_id),
+                                              cert_serial,
+                                              len(cert_serial),
+                                              cert_subject,
+                                              len(cert_subject),
+                                              cert_issuer,
+                                              len(cert_issuer),
+                                              cert_value,
+                                              len(cert_value),
+                                              token,
+                                              private,
+                                              modifiable,
+                                              overwrite,
+                                              byref(h_cert_ptr))
+
+        if rv == 0:
+            raise HsmError(bytes_to_str(msg.value))
+        h_cert = h_cert_ptr.value
+        if h_cert == 0:
+            raise HsmError("cert handle returned from HSM is invalid")
+        return h_cert
 
     def import_secret_key(self,
                           key_label,
