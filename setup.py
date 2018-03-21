@@ -13,7 +13,7 @@ and DNSSec's SoftHSM.  This client supports the PKCS 11 OASIS standard v2.20 and
 the companion, cross-platform, open source shared library libhsm.so / libhsm.dll.
 
 The source code to compile and install libhsm.so can be found via the following link.
-    https://github.com/bentonstark/libhsm/archive/2.4.0.zip
+    https://github.com/bentonstark/libhsm/archive/2.5.0.zip
 '''
 
 classifiers = [
