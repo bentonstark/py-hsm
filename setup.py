@@ -47,7 +47,7 @@ setup(
     maintainer="Benton Stark",
     maintainer_email="benton.stark@gmail.com",
     url="https://github.com/bentonstark/py-hsm",
-    download_url="https://github.com/bentonstark/py-hsm/archive/2.4.0.zip",
+    download_url="https://github.com/bentonstark/py-hsm/archive/2.5.0.zip",
     license="GPL",
     packages=find_packages(),
     scripts=[
