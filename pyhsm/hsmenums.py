@@ -585,6 +585,8 @@ class HsmMech(Enum):
     # AES CFB-8 mode.
     AES_CFB128 = 0x00002107
     # AES CFB-128 mode.
+    AES_KEY_WRAP = 0x00002109
+    # AES KEY WRAP. Used to encrypt/decrypt or wrap/unwrap a symmetric key using an AES key.
     CA_LUNA_ECDSA_SHA224 = 0x80000122
     # ECDSA SHA-224.  SafeNet / Gemalto Luna HSM vendor specific.
     CA_LUNA_ECDSA_SHA256 = 0x80000123
