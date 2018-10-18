@@ -35,10 +35,8 @@ def __menu_handler(args):
     with HsmClient(slot=args.slot, pin=args.pin, pkcs11_lib=args.module) as c:
 
         iv = c.generate_random(size=16)
-        # CKM_AES_KEY_WRAP
-        mech = 0x00002109
         wrapped_key_bytes = c.wrap_key(key_handle=args.handle, wrap_key_handle=args.wrapHandle, wrap_key_iv=iv,
-                                       wrap_key_mech=mech)
+                                       wrap_key_mech=HsmMech.AES_KEY_WRAP)
         print("iv: {}".format(bytes_to_hex(iv)))
         print("wrapped_key_bytes: {}".format(bytes_to_hex(wrapped_key_bytes)))
 
